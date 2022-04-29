@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
   header: {
     marginTop: 40,
     marginBottom: 20,
-    flexDirection: "row",
     marginEnd: 16,
   },
 
@@ -18,10 +17,6 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     color: "#404040",
     marginEnd: 16,
-  },
-
-  headerButton: {
-    justifyContent: "center",
   },
 
   cityname: {
@@ -42,4 +37,8 @@ export const styles = StyleSheet.create({
   otherText: {
     color: "#dddddd",
   },
+
+  textIcon: { flex: 1, flexDirection: "row", alignItems: "center" },
+
+  icon: { flex: 1, alignItems: "flex-end", marginRight: 4 },
 });

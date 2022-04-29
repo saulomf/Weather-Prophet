@@ -13,6 +13,11 @@ const Home = ({ navigation }) => {
   const isfocused = useIsFocused();
 
   useEffect(() => {
+    getCitiesNames();
+    getData();
+  }, []);
+
+  useEffect(() => {
     if (isfocused) {
       getCitiesNames();
       getData();
@@ -31,17 +36,14 @@ const Home = ({ navigation }) => {
 
   async function getData() {
     setCidades([]);
-    const list = [];
 
     cidadesNomes.forEach(async (item) => {
       const response = await apiGET({
         type: 1,
         query: `weather?q=${item}`,
       });
-      list.push(response);
+      setCidades([...cidades, response]);
     });
-    console.log(list.length);
-    setCidades(list);
   }
 
   const header = () => (
@@ -64,23 +66,29 @@ const Home = ({ navigation }) => {
   );
 
   const renderCidades = ({ item }) => {
-    //console.log(item);
+    const { description } = item?.weather[0];
     return (
       <View>
-        <LinearGradient
-          colors={["#5c76af", "#4b69a8", "#293f7a"]}
-          style={{ borderRadius: 5, padding: 10, marginBottom: 10 }}
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Details", { city: item })}
         >
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            <Text style={styles.cityname}>{item.name}</Text>
-            <Text style={styles.temp}>{Math.trunc(item?.main.temp)}°</Text>
-          </View>
-          <Text>{item.weather[0].description}</Text>
-          <Text>
-            <Text>{Math.trunc(item.main.temp_min)}°</Text> -{" "}
-            <Text>{Math.trunc(item.main.temp_max)}°</Text>
-          </Text>
-        </LinearGradient>
+          <LinearGradient
+            colors={["#5c76af", "#4b69a8", "#293f7a"]}
+            style={{ borderRadius: 5, padding: 10, marginBottom: 10 }}
+          >
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <Text style={styles.cityname}>{item.name}</Text>
+              <Text style={styles.temp}>{Math.trunc(item?.main?.temp)}°</Text>
+            </View>
+            <Text style={styles.otherText}>
+              {description[0].toUpperCase() + description.slice(1)}
+            </Text>
+            <Text style={styles.otherText}>
+              <Text>Min: {Math.trunc(item?.main?.temp_min)}°</Text> -{" "}
+              <Text>Max: {Math.trunc(item?.main?.temp_max)}°</Text>
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     );
   };

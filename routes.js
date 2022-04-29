@@ -1,7 +1,8 @@
-import Home from "./src";
-import Search from "./src/Search";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import Home from "./src";
+import Search from "./src/Search";
+import Details from "./src/Details";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,11 @@ const Routes = () => {
           name="Search"
           component={Search}
           options={{ title: "Busca" }}
+        />
+        <Stack.Screen
+          name="Details"
+          component={Details}
+          options={({ route }) => ({ title: route.params.city.name })}
         />
       </Stack.Navigator>
     </NavigationContainer>
