@@ -4,6 +4,14 @@ export const styles = StyleSheet.create({
   container: {
     backgroundColor: "#eeeeee",
     paddingHorizontal: 16,
+    flex: 1,
+  },
+
+  input: {
+    borderWidth: 1,
+    borderColor: "#c0c0c0",
+    padding: 5,
+    marginTop: 5,
   },
 
   header: {
@@ -20,22 +28,12 @@ export const styles = StyleSheet.create({
     marginEnd: 16,
   },
 
-  headerButton: {
-    justifyContent: "center",
-  },
-
-  cityname: {
-    fontSize: 18,
-    color: "white",
-    textAlign: "left",
-    flex: 1,
-  },
-
-  temp: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-    textAlign: "right",
+  list: {
+    borderWidth: 1,
+    borderTopWidth: 0,
+    borderColor: "#c0c0c0",
+    padding: 5,
+    marginBottom: 20,
     flex: 1,
   },
 });

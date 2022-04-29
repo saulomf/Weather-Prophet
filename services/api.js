@@ -7,10 +7,9 @@ const ip = "https://api.openweathermap.org/data/2.5/";
 //5days = forecast?q=Brasília &appid=ade94718803879a753d1239d109131fe
 
 async function apiGET(params) {
-  const { query } = params;
-
+  const { query, type } = params;
   try {
-    response = await axios.get(ip + query + key_lang_unit);
+    response = await axios.get(type === 2 ? query : ip + query + key_lang_unit);
     return response.data;
   } catch (error) {
     return [];
