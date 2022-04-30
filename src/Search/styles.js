@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   },
 
   header: {
-    marginTop: 40,
+    marginTop: 20,
     marginBottom: 20,
     flexDirection: "row",
     marginEnd: 16,
@@ -34,6 +34,6 @@ export const styles = StyleSheet.create({
     borderColor: "#c0c0c0",
     padding: 5,
     marginBottom: 20,
-    flex: 1,
+    maxHeight: 500,
   },
 });

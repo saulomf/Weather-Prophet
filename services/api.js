@@ -1,10 +1,8 @@
 import axios from "axios";
 
 const key_lang_unit =
-  "&appid=ade94718803879a753d1239d109131fe&lang=pt_br&units=metric";
+  ",BR&appid=9a7d5bafcfe7701d77b6b33eadbc9719&lang=pt_br&units=metric";
 const ip = "https://api.openweathermap.org/data/2.5/";
-//current = weather?q=São%20Paulo &appid=ade94718803879a753d1239d109131fe
-//5days = forecast?q=Brasília &appid=ade94718803879a753d1239d109131fe
 
 async function apiGET(params) {
   const { query, type } = params;
@@ -12,7 +10,7 @@ async function apiGET(params) {
     response = await axios.get(type === 2 ? query : ip + query + key_lang_unit);
     return response.data;
   } catch (error) {
-    return [];
+    return query.slice(10);
   }
 }
 export default apiGET;

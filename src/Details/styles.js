@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
   },
 
   header: {
-    marginTop: 40,
+    marginTop: 20,
     marginBottom: 20,
     marginEnd: 16,
   },

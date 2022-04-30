@@ -10,13 +10,14 @@ import apiGET from "../../services/api";
 import { styles } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Search = ({ navigation }) => {
+const Search = ({ navigation, route }) => {
   const [cidades, setCidades] = useState([]);
   const [cidadesCopia, setCidadesCopia] = useState([]);
   const [inputCidade, onChangeInputCidade] = useState("");
   const [estados, setEstados] = useState([]);
   const [estadosCopia, setEstadosCopia] = useState([]);
   const [inputEstado, onChangeInputEstado] = useState("");
+  const { setCity } = route.params;
 
   useEffect(() => {
     getEstados();
@@ -57,7 +58,7 @@ const Search = ({ navigation }) => {
   function atualizaListaCidade() {
     if (inputCidade === "") {
       //quando os filtros são removidos
-      setEstados(cidadesCopia);
+      setCidades(cidadesCopia);
     } else {
       const filtrados = cidadesCopia.filter((elemento) => {
         return elemento.nome.includes(inputCidade);
@@ -97,6 +98,7 @@ const Search = ({ navigation }) => {
               }
             : () => {
                 storeData(item.nome);
+                setCity((prev) => [...prev, item.nome]);
                 navigation.navigate("Home");
               }
         }
@@ -120,6 +122,7 @@ const Search = ({ navigation }) => {
           onChangeInputEstado(elemento);
           atualizaListaEstado();
         }}
+        onPressIn={() => setCidades([])}
         value={inputEstado}
         placeholder="Digite o nome do estado desejado"
       />

@@ -3,6 +3,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import Home from "./src";
 import Search from "./src/Search";
 import Details from "./src/Details";
+import { AntDesign } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
+import Delete from "./src/utils/delete";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +32,28 @@ const Routes = () => {
         <Stack.Screen
           name="Details"
           component={Details}
-          options={({ route }) => ({ title: route.params.city.name })}
+          options={({ route, navigation }) => ({
+            title: route.params.city.name,
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={async () => {
+                  updatedCities = await Delete(
+                    "cities",
+                    route.params.city.name
+                  );
+                  route.params.updateCities(updatedCities);
+                  const updatedFavorites = await Delete(
+                    "favorites",
+                    route.params.city.name
+                  );
+                  route.params.updateFavorites(updatedFavorites);
+                  navigation.goBack();
+                }}
+              >
+                <AntDesign name="delete" size={24} color="black" />
+              </TouchableOpacity>
+            ),
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>
