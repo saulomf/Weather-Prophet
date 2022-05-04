@@ -11,8 +11,7 @@ import apiGET from "../services/api";
 import { styles } from "./styles";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Delete from "./utils/delete";
+import { Get, Store, Delete } from "../services/asyncStorage";
 
 const Home = ({ navigation }) => {
   const [cidades, setCidades] = useState([]);
@@ -35,23 +34,13 @@ const Home = ({ navigation }) => {
   }, [favoritosNomes]);
 
   const getCitiesNames = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem("@cities");
-      const citiesObject = jsonValue != null ? JSON.parse(jsonValue) : null;
-      citiesObject !== null ? setCidadesNomes(citiesObject.cities) : [];
-    } catch (e) {
-      console.error(e);
-    }
+    const citiesNames = await Get("cities");
+    setCidadesNomes(citiesNames);
   };
 
   const getFavoritesNames = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem("@favorites");
-      const citiesObject = jsonValue != null ? JSON.parse(jsonValue) : null;
-      citiesObject !== null ? setFavoritosNomes(citiesObject.cities) : [];
-    } catch (e) {
-      console.error(e);
-    }
+    const favoritesNames = await Get("favorites");
+    setFavoritosNomes(favoritesNames);
   };
 
   async function getData() {
@@ -78,29 +67,18 @@ const Home = ({ navigation }) => {
   }
 
   async function addFavorite(item) {
-    let cities = [];
-    try {
-      const jsonValue = await AsyncStorage.getItem("@favorites");
-      const citiesStored = jsonValue != null ? JSON.parse(jsonValue) : null;
-      if (citiesStored != null) cities = citiesStored.cities;
-    } catch (e) {
-      console.error(e);
-    }
-    cities.push(item.name);
-    const citiesObject = { cities: cities };
-    try {
-      const jsonValue = JSON.stringify(citiesObject);
-      await AsyncStorage.setItem("@favorites", jsonValue);
-    } catch (e) {
-      console.error(e);
-    }
+    Store("favorites", item.name);
     setFavoritos((prev) => [...prev, item]);
     setFavoritosNomes((prev) => [...prev, item.name]);
   }
 
   const headerFavorites = () => (
-    <View style={styles.header}>
-      <Text style={styles.headerText}>Favoritos</Text>
+    <View>
+      {favoritos.length > 0 ? (
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Favoritos</Text>
+        </View>
+      ) : null}
     </View>
   );
 
@@ -180,7 +158,13 @@ const Home = ({ navigation }) => {
                         item.name
                       );
                       setFavoritosNomes(updatedFavorites);
-                    } else addFavorite(item);
+                      await Store("cities", item.name);
+                      setCidadesNomes((prev) => [...prev, item.name]);
+                    } else {
+                      const updatedCities = await Delete("cities", item.name);
+                      setCidadesNomes(updatedCities);
+                      addFavorite(item);
+                    }
                   }}
                 >
                   {favoritosNomes.includes(item.name) ? (

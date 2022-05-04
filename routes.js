@@ -5,7 +5,7 @@ import Search from "./src/Search";
 import Details from "./src/Details";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
-import Delete from "./src/utils/delete";
+import { Delete } from "./services/asyncStorage";
 
 const Stack = createNativeStackNavigator();
 

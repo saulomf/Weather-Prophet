@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import apiGET from "../../services/api";
 import { styles } from "./styles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Store } from "../../services/asyncStorage";
 
 const Search = ({ navigation, route }) => {
   const [cidades, setCidades] = useState([]);
@@ -67,26 +67,6 @@ const Search = ({ navigation, route }) => {
     }
   }
 
-  const storeData = async (value) => {
-    let cities = [];
-    try {
-      const jsonValue = await AsyncStorage.getItem("@cities");
-      const citiesStored = jsonValue != null ? JSON.parse(jsonValue) : null;
-      if (citiesStored != null) cities = citiesStored.cities;
-    } catch (e) {
-      console.error(e);
-    }
-    cities.push(value);
-    // console.log(cities);
-    const citiesObject = { cities: cities };
-    try {
-      const jsonValue = JSON.stringify(citiesObject);
-      await AsyncStorage.setItem("@cities", jsonValue);
-    } catch (e) {
-      // saving error
-    }
-  };
-
   const renderItem = ({ item }) => (
     <View style={{ margin: 4 }}>
       <TouchableOpacity
@@ -97,7 +77,7 @@ const Search = ({ navigation, route }) => {
                 getCidades(item.sigla);
               }
             : () => {
-                storeData(item.nome);
+                Store("cities", item.nome);
                 setCity((prev) => [...prev, item.nome]);
                 navigation.navigate("Home");
               }
