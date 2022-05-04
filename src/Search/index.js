@@ -9,6 +9,7 @@ import {
 import apiGET from "../../services/api";
 import { styles } from "./styles";
 import { Store } from "../../services/asyncStorage";
+import SearchBox from "../Components/SearchBox";
 
 const Search = ({ navigation, route }) => {
   const [cidades, setCidades] = useState([]);
@@ -96,44 +97,18 @@ const Search = ({ navigation, route }) => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Busque pela cidade desejada</Text>
       </View>
-      <TextInput
-        style={styles.input}
-        onChangeText={(elemento) => {
-          onChangeInputEstado(elemento);
-          atualizaListaEstado();
-        }}
-        onPressIn={() => setCidades([])}
-        value={inputEstado}
+      <SearchBox
+        dataReceived={estados}
         placeholder="Digite o nome do estado desejado"
+        set={getCidades}
       />
-      {cidades.length === 0 ? (
-        <View style={styles.list}>
-          <FlatList
-            data={estados}
-            renderItem={renderItem}
-            keyExtractor={(index) => index.id}
-          />
-        </View>
-      ) : null}
       {cidades.length > 0 ? (
-        <View style={{ flex: 1 }}>
-          <TextInput
-            style={styles.input}
-            onChangeText={(elemento) => {
-              onChangeInputCidade(elemento);
-              atualizaListaCidade();
-            }}
-            value={inputCidade}
-            placeholder="Digite o nome da cidade desejada"
-          />
-          <View style={styles.list}>
-            <FlatList
-              data={cidades}
-              renderItem={renderItem}
-              keyExtractor={(index) => index.id}
-            />
-          </View>
-        </View>
+        <SearchBox
+          dataReceived={cidades}
+          placeholder="Digite o nome da cidade desejada"
+          set={setCity}
+          navigation={navigation}
+        />
       ) : null}
     </View>
   );

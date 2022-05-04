@@ -1,7 +1,7 @@
 import axios from "axios";
+import { OPENWEATHER_API_KEY } from "@env";
 
-const key_lang_unit =
-  ",BR&appid=9a7d5bafcfe7701d77b6b33eadbc9719&lang=pt_br&units=metric";
+const key_lang_unit = `,BR&appid=${OPENWEATHER_API_KEY}&lang=pt_br&units=metric`;
 const ip = "https://api.openweathermap.org/data/2.5/";
 
 async function apiGET(params) {
